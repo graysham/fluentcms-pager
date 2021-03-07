@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, force_text
+from six import python_2_unicode_compatible
+from django.utils.encoding import force_str
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
@@ -47,11 +48,11 @@ class PagerItem(ContentItem):
         else:
             page = self.previous_parent_sibling
 
-        return force_text(page) if page is not None else _("Previous")
+        return force_str(page) if page is not None else _("Previous")
 
     def get_next_url(self):
         if self.next_url:
-            return force_text(self.next_url)
+            return force_str(self.next_url)
         else:
             page = self.next_parent_sibling
             return page.get_absolute_url() if page is not None else None
@@ -65,7 +66,7 @@ class PagerItem(ContentItem):
         else:
             page = self.next_parent_sibling
 
-        return force_text(page) if page is not None else _("Next")
+        return force_str(page) if page is not None else _("Next")
 
     @cached_property
     def previous_parent_sibling(self):
